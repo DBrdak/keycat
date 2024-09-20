@@ -21,21 +21,48 @@ public sealed class HotkeyRepository : IDisposable, IAsyncDisposable
 
     public async Task<List<Hotkey>> ListAllAsync() => await _context.Hotkeys.ToListAsync();
 
-    public async Task AddAsync(Hotkey hotkey)
+    public async Task<bool> AddAsync(Hotkey hotkey)
     {
+        var isHotkeyExists = await _context.Hotkeys.AnyAsync(
+            h => h.Shortcut.ToLower() == hotkey.Shortcut.ToLower());
+
+        if (isHotkeyExists)
+        {
+            return false;
+        }
+
         await _context.Hotkeys.AddAsync(hotkey);
         await _context.SaveChangesAsync();
+        return true;
     }
 
-    public async Task UpdateAsync(Hotkey hotkey)
+    public async Task<bool> UpdateAsync(Hotkey hotkey)
     {
+        var isHotkeyExists = await _context.Hotkeys.AnyAsync(
+            h => h.Shortcut.ToLower() == hotkey.Shortcut.ToLower() &&
+                 h.Id != hotkey.Id);
+
+        if (isHotkeyExists)
+        {
+            return false;
+        }
+
         _context.Hotkeys.Update(hotkey);
         await _context.SaveChangesAsync();
+        return true;
     }
 
-    public async Task DeleteAsync(Hotkey hotkey)
+    public async Task<bool> DeleteAsync(string shortcut)
     {
+        var hotkey = await GetByShortcutAsync(shortcut);
+
+        if (hotkey is null)
+        {
+            return false;
+        }
+
         _context.Hotkeys.Remove(hotkey);
         await _context.SaveChangesAsync();
+        return true;
     }
 }

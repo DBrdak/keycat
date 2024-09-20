@@ -1,15 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-	<ProjectReference Include="..\KeyCat.Data\KeyCat.Data.csproj" />
-	<ProjectReference Include="..\KeyCat.SharedKernel\KeyCat.SharedKernel.csproj" />
+	<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	<PackageReference Include="SharpHook" Version="5.3.7" />
   </ItemGroup>
 
 </Project>

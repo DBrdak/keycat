@@ -1,15 +1,15 @@
 using System.Diagnostics;
-using Gma.System.MouseKeyHook;
 using KeyCat.Data;
-using Newtonsoft.Json;
+using KeyCat.SharedKernel;
+using SharpHook;
 
 namespace KeyCat.Listener;
 
 internal static class Program
 {
-    private static IKeyboardMouseEvents? globalHook;
+    private static GlobalHookBase? globalHook;
 
-    private static readonly HashSet<Keys> pressedKeys = new();
+    private static readonly HashSet<Key> pressedKeys = new();
 
     [STAThread]
     static void Main()
@@ -23,27 +23,38 @@ internal static class Program
 
     private static void Subscribe()
     {
-        globalHook = Hook.GlobalEvents();
+        globalHook = new SimpleGlobalHook(true);
 
-        globalHook.KeyDown += GlobalHook_KeyDown;
-        globalHook.KeyUp += GlobalHook_KeyUp;
+        globalHook.KeyPressed += GlobalHook_KeyDown;
+        globalHook.MousePressed += GlobalHook_MouseDown;
+        globalHook.KeyReleased += GlobalHook_KeyUp;
+        globalHook.MousePressed += GlobalHook_MouseUp;
+        globalHook.RunAsync();
     }
 
     private static void Unsubscribe()
     {
-        globalHook.KeyDown -= GlobalHook_KeyDown;
-        globalHook.KeyUp -= GlobalHook_KeyUp;
+        globalHook.KeyPressed -= GlobalHook_KeyDown;
+        globalHook.KeyReleased -= GlobalHook_KeyUp;
 
         globalHook.Dispose();
     }
 
-    private static async void GlobalHook_KeyDown(object sender, KeyEventArgs e)
+
+    private static async void GlobalHook_KeyDown(object? sender, KeyboardHookEventArgs e)
     {
-        pressedKeys.Add(e.KeyCode);
+        var pressedKey = e.Data.KeyCode.ToKey();
+        
+        if (pressedKey is null)
+        {
+            return;
+        }
+
+        pressedKeys.Add(pressedKey);
 
         await using var hotkeyRepository = new HotkeyRepository();
 
-        var hotkey = await hotkeyRepository.GetByShortcutAsync(string.Join('+', pressedKeys));
+        var hotkey = await hotkeyRepository.GetByShortcutAsync(Key.AsSequence(pressedKeys));
         
         if(hotkey is not null)
         {
@@ -51,8 +62,32 @@ internal static class Program
         }
     }
 
-    private static void GlobalHook_KeyUp(object sender, KeyEventArgs e) => 
-        pressedKeys.Remove(e.KeyCode);
+    private static void GlobalHook_KeyUp(object? sender, KeyboardHookEventArgs e) => 
+        pressedKeys.Remove(e.Data.KeyCode.ToKey());
+
+    private static async void GlobalHook_MouseDown(object? sender, MouseHookEventArgs e)
+    {
+        var pressedKey = e.Data.Button.ToKey();
+
+        if (pressedKey is null)
+        {
+            return;
+        }
+
+        pressedKeys.Add(pressedKey);
+
+        await using var hotkeyRepository = new HotkeyRepository();
+
+        var hotkey = await hotkeyRepository.GetByShortcutAsync(Key.AsSequence(pressedKeys));
+
+        if (hotkey is not null)
+        {
+            ExecuteHotkey(hotkey.Executable);
+        }
+    }
+
+    private static void GlobalHook_MouseUp(object? sender, MouseHookEventArgs e) =>
+        pressedKeys.Remove(e.Data.Button.ToKey());
 
     private static void ExecuteHotkey(string executablePath)
     {

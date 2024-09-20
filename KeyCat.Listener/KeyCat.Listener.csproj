@@ -9,12 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MouseKeyHook" Version="5.7.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\KeyCat.Data\KeyCat.Data.csproj" />
+    <ProjectReference Include="..\KeyCat.SharedKernel\KeyCat.SharedKernel.csproj" />
   </ItemGroup>
 
 </Project>
