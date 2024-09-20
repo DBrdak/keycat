@@ -1,6 +1,6 @@
 ﻿namespace KeyCat.CLI.Interface.Forms.Hotkey;
 
-internal sealed class HotkeyFormsChain : FormsChain
+internal sealed class HotkeyForm : FormsChain
 {
     private readonly NameForm _nameForm = new();
     private readonly DescriptionForm _descriptionForm = new();

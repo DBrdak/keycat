@@ -18,11 +18,12 @@ public static class Terminal
         Console.ResetColor();
     }
 
-    public static void PrintError(string message)
+    public static bool PrintError(string message)
     {
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine(message);
         Console.ResetColor();
+        return false;
     }
 
     public static string Input()

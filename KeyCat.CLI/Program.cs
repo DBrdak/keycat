@@ -1,5 +1,7 @@
-﻿using KeyCat.CLI.Interface.Forms;
+﻿using KeyCat.CLI.Factories;
 using KeyCat.CLI.Interface.Forms.Hotkey;
+using KeyCat.Data;
+using Newtonsoft.Json;
 
 namespace KeyCat.CLI;
 
@@ -7,10 +9,8 @@ internal class Program
 {
     static async Task Main(string[] args)
     {
-        var chain = (await new HotkeyFormsChain().InitializeChain().InvokeChainAsync()).As<HotkeyFormsChain>();
-        Console.WriteLine(chain.Name);
-        Console.WriteLine(chain.Description);
-        Console.WriteLine(chain.Shortcut);
-        Console.WriteLine(chain.Executable);
+        var factory = new HotkeyFactory();
+        await factory.ProduceInteractive();
+        Console.WriteLine(JsonConvert.SerializeObject(factory.Product));
     }
 }

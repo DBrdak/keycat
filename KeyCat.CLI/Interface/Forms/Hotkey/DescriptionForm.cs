@@ -1,5 +1,4 @@
 ﻿using System.Text.RegularExpressions;
-using System.Xml.Linq;
 
 namespace KeyCat.CLI.Interface.Forms.Hotkey;
 
