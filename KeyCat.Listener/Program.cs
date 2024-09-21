@@ -28,14 +28,16 @@ internal static class Program
         globalHook.KeyPressed += GlobalHook_KeyDown;
         globalHook.MousePressed += GlobalHook_MouseDown;
         globalHook.KeyReleased += GlobalHook_KeyUp;
-        globalHook.MousePressed += GlobalHook_MouseUp;
+        globalHook.MouseReleased += GlobalHook_MouseUp;
         globalHook.RunAsync();
     }
 
     private static void Unsubscribe()
     {
         globalHook.KeyPressed -= GlobalHook_KeyDown;
+        globalHook.MousePressed -= GlobalHook_MouseDown;
         globalHook.KeyReleased -= GlobalHook_KeyUp;
+        globalHook.MouseReleased -= GlobalHook_MouseUp;
 
         globalHook.Dispose();
     }
@@ -99,12 +101,15 @@ internal static class Program
                 return;
             }
 
+            // TODO Problem - it does not work for console files (ps1, bat, etc.)
             Process.Start(new ProcessStartInfo
             {
                 FileName = executablePath,
                 UseShellExecute = true,
-                WindowStyle = ProcessWindowStyle.Hidden
+                WindowStyle = ProcessWindowStyle.Hidden,
             });
+
+            pressedKeys.Clear();
         }
         catch (Exception ex)
         {

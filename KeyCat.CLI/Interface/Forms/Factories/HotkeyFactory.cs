@@ -1,14 +1,12 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using KeyCat.CLI.Interface;
 using KeyCat.CLI.Interface.Forms.Hotkey;
-using KeyCat.Data;
 
-namespace KeyCat.CLI.Factories;
+namespace KeyCat.CLI.Interface.Forms.Factories;
 
 internal sealed class HotkeyFactory : FromFormChainFactory<HotkeyForm>
 {
-    private Hotkey product;
-    public Hotkey Product => product;
+    private Data.Hotkey product;
+    public Data.Hotkey Product => product;
 
     [MemberNotNull(nameof(product))]
     public override async Task ProduceInteractive()
@@ -37,6 +35,6 @@ internal sealed class HotkeyFactory : FromFormChainFactory<HotkeyForm>
             Environment.Exit(1);
         }
 
-        product = new Hotkey(form.Name!, form.Description!, form.Shortcut!, form.Executable!);
+        product = new Data.Hotkey(form.Name!, form.Description!, form.Shortcut!, form.Executable!);
     }
 }

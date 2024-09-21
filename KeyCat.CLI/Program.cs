@@ -1,16 +1,25 @@
-﻿using KeyCat.CLI.Factories;
-using KeyCat.CLI.Interface.Forms.Hotkey;
+﻿using KeyCat.CLI.Application;
 using KeyCat.Data;
-using Newtonsoft.Json;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace KeyCat.CLI;
 
 internal class Program
 {
-    static async Task Main(string[] args)
+    public static async Task Main(string[] args)
     {
-        var factory = new HotkeyFactory();
-        await factory.ProduceInteractive();
-        Console.WriteLine(JsonConvert.SerializeObject(factory.Product));
+        var services = new ServiceCollection();
+
+        ConfigureServices(services);
+
+        var serviceProvider = services.BuildServiceProvider();
+
+        await serviceProvider.GetService<App>()?.Run(args);
+    }
+
+    private static void ConfigureServices(IServiceCollection services)
+    {
+        services.AddTransient<App>();
+        services.AddTransient<HotkeyRepository>();
     }
 }

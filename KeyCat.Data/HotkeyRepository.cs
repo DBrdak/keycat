@@ -24,7 +24,9 @@ public sealed class HotkeyRepository : IDisposable, IAsyncDisposable
     public async Task<bool> AddAsync(Hotkey hotkey)
     {
         var isHotkeyExists = await _context.Hotkeys.AnyAsync(
-            h => h.Shortcut.ToLower() == hotkey.Shortcut.ToLower());
+            h => h.Shortcut.ToLower() == hotkey.Shortcut.ToLower() ||
+                 hotkey.Shortcut.ToLower().StartsWith(h.Shortcut.ToLower()) ||
+                 h.Name.ToLower() == hotkey.Name.ToLower());
 
         if (isHotkeyExists)
         {

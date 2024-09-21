@@ -1,7 +1,6 @@
-﻿using KeyCat.CLI.Interface.Forms;
-using KeyCat.CLI.Interface.Forms.Hotkey;
+﻿using KeyCat.CLI.Interface.Forms.Hotkey;
 
-namespace KeyCat.CLI.Factories;
+namespace KeyCat.CLI.Interface.Forms.Factories;
 
 internal abstract class FromFormChainFactory<T> where T : FormsChain
 {

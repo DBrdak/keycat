@@ -17,8 +17,8 @@ internal abstract class FormsChain
         foreach (var form in _forms)
         {
             form.Initialize();
-            await Task.Delay(500);
             await form.HandleInput();
+            await Task.Delay(500);
         }
 
         return this;

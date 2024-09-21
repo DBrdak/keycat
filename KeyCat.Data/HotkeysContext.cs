@@ -4,11 +4,20 @@ namespace KeyCat.Data;
 
 internal sealed class HotkeysContext : DbContext
 {
-    private const string connectionString = "Data Source=hotkeys.db";
+    private static readonly string directory =
+        $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\keycat";
+    private static readonly string connectionString =
+        $@"Data Source={directory}\hotkeys.db";
+
     public DbSet<Hotkey> Hotkeys { get; init; }
 
     public HotkeysContext()
     {
+        if (!Directory.Exists(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
+
         Database.EnsureCreated();
     }
 
