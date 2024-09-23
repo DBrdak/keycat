@@ -9,11 +9,13 @@ internal sealed class ExecutableForm : Form<string>
     {
     }
 
-    public override async Task HandleInput()
+    public override Task HandleInput()
     {
         _executablePath = Terminal.Input();
 
         SetInput(_executablePath);
+
+        return Task.CompletedTask;
     }
 
     protected override void ValidateInput()

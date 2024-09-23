@@ -16,6 +16,9 @@ internal class HelpCommandHandler : CommandHandler<HelpCommand>
         {
             Terminal.PrintLine($"-> {command.Name}", ConsoleColor.Cyan);
             Terminal.PrintLine($"\t {command.Info}");
+            Terminal.PrintLine($"\t Parameters:");
+            command.Arguments.ToList().ForEach(
+                arg => Terminal.PrintLine($"\t\t -> {arg.LongName}, {arg.ShortName} - {arg.Info}"));
             Console.WriteLine();
         }
     }

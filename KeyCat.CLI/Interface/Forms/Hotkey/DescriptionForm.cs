@@ -12,22 +12,26 @@ internal sealed class DescriptionForm : Form<string>
     {
     }
 
-    public override async Task HandleInput()
+    public override Task HandleInput()
     {
         _description = Terminal.Input();
         CleanupDescription();
 
         SetInput(_description);
+
+        return Task.CompletedTask;
     }
 
     private void CleanupDescription() => _description = Regex.Replace(_description, @"\s+", " ").Trim();
 
     protected override void ValidateInput()
     {
-        if (!Regex.IsMatch(_description, descriptionPattern))
+        if (Regex.IsMatch(_description, descriptionPattern))
         {
-            Terminal.PrintError("Invalid value (Allowed characters are: letters, digits, spaces, periods, commas and dashes. Description length must be between 0 and 255 characters)");
-            Environment.Exit(1);
+            return;
         }
+        
+        Terminal.PrintError("Invalid value (Allowed characters are: letters, digits, spaces, periods, commas and dashes. Description length must be between 0 and 255 characters)");
+        Environment.Exit(1);
     }
 }

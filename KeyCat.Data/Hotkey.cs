@@ -9,15 +9,15 @@ public sealed class Hotkey
 {
     public Guid Id { get; init; }
     [MaxLength(50)]
-    public string Name { get; init; }
+    public string Name { get; private set; }
     [MaxLength(300)]
-    public string Description { get; init; }
+    public string Description { get; private set; }
     [MaxLength(100)]
-    public string Shortcut { get; init; }
+    public string Shortcut { get; private set; }
     [NotMapped]
     public HashSet<string> Keys { get; init; }
     [MaxLength(300)]
-    public string Executable { get; init; }
+    public string Executable { get; private set; }
 
     public Hotkey(string name, string description, string shortcut, string executable, Guid? id = null)
     {
@@ -43,4 +43,8 @@ public sealed class Hotkey
     private Hotkey()
     { }
 
+    public void UpdateName(string name) => Name = name;
+    public void UpdateDescription(string description) => Description = description;
+    public void UpdateShortcut(string shortcut) => Shortcut = shortcut;
+    public void UpdateExecutable(string executable) => Executable = executable;
 }

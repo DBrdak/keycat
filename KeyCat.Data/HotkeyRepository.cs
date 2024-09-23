@@ -16,6 +16,9 @@ public sealed class HotkeyRepository : IDisposable, IAsyncDisposable
         await _context.DisposeAsync();
     }
 
+    public async Task<Hotkey?> GetByNameAsync(string name) =>
+        await _context.Hotkeys.FirstOrDefaultAsync(h => h.Name.ToLower() == name.ToLower());
+
     public async Task<Hotkey?> GetByShortcutAsync(string shortcut) =>
         await _context.Hotkeys.FirstOrDefaultAsync(h => h.Shortcut.ToLower() == shortcut.ToLower());
 
@@ -41,7 +44,9 @@ public sealed class HotkeyRepository : IDisposable, IAsyncDisposable
     public async Task<bool> UpdateAsync(Hotkey hotkey)
     {
         var isHotkeyExists = await _context.Hotkeys.AnyAsync(
-            h => h.Shortcut.ToLower() == hotkey.Shortcut.ToLower() &&
+            h => (h.Shortcut.ToLower() == hotkey.Shortcut.ToLower() ||
+                 hotkey.Shortcut.ToLower().StartsWith(h.Shortcut.ToLower()) ||
+                 h.Name.ToLower() == hotkey.Name.ToLower()) &&
                  h.Id != hotkey.Id);
 
         if (isHotkeyExists)

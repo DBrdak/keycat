@@ -17,7 +17,7 @@ internal sealed class HotkeyFactory : FromFormChainFactory<HotkeyForm>
         {
             _ when form.Name is null =>
                 Terminal.PrintError(
-                    "Unexpected error occured, LongName was not registered. Please try again."),
+                    "Unexpected error occured, Name was not registered. Please try again."),
             _ when form.Description is null =>
                 Terminal.PrintError(
                     "Unexpected error occured, Description was not registered. Please try again."),

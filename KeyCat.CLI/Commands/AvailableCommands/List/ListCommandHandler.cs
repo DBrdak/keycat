@@ -32,7 +32,7 @@ internal sealed class ListCommandHandler : CommandHandler<ListCommand>
 
         hotkeys.ForEach(hotkey =>
         {
-            Terminal.PrintLine($"-> LongName: {hotkey.Name}", ConsoleColor.Blue);
+            Terminal.PrintLine($"-> Name: {hotkey.Name}", ConsoleColor.Blue);
             Terminal.PrintLine($"\t {hotkey.Description}");
             Terminal.Print($"\t Shortcut: ", ConsoleColor.Cyan);
             Terminal.PrintLine($"{hotkey.Shortcut}");

@@ -1,4 +1,6 @@
-﻿namespace KeyCat.CLI.Interface.Forms;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace KeyCat.CLI.Interface.Forms;
 
 internal abstract class Form
 {
@@ -23,6 +25,8 @@ internal abstract class Form<T> : Form
     {
     }
 
+    [MemberNotNull(nameof(_input))]
+    [MemberNotNull(nameof(Input))]
     public abstract override Task HandleInput();
     protected abstract override void ValidateInput();
     protected void SetInput(T input)
