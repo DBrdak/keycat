@@ -97,23 +97,75 @@ internal static class Program
         {
             if (!File.Exists(executablePath))
             {
-                MessageBox.Show($"Executable file not found: {executablePath}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    $"Executable file not found: {executablePath}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
                 return;
             }
+            MessageBox.Show(
+                $"{executablePath}",
+                "Error",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
 
-            // TODO Problem - it does not work for console files (ps1, bat, etc.)
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = executablePath,
-                UseShellExecute = true,
-                WindowStyle = ProcessWindowStyle.Hidden,
-            });
+            var extension = Path.GetExtension(executablePath).ToLowerInvariant();
+
+            MessageBox.Show(
+                $"{extension}",
+                "Error",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+            Process.Start(GetProccess(extension, executablePath));
 
             pressedKeys.Clear();
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Error executing executable file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(
+                $"Error executing executable file: {ex.Message}",
+                "Error",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
         }
     }
+
+    private static ProcessStartInfo GetProccess(string extension, string filePath) =>
+        extension switch
+        {
+            ".exe" => new ProcessStartInfo
+            {
+                FileName = filePath,
+                UseShellExecute = true,
+                WindowStyle = ProcessWindowStyle.Hidden
+            },
+            ".bat" or ".cmd" => new ProcessStartInfo
+            {
+                FileName = "cmd.exe",
+                Arguments = $"/c \"{filePath}\"",
+                UseShellExecute = false,
+                CreateNoWindow = false,
+            },
+            ".ps1" => new ProcessStartInfo
+            {
+                FileName = "powershell.exe",
+                Arguments = $"-ExecutionPolicy Bypass -File \"{filePath}\"",
+                UseShellExecute = false,
+                CreateNoWindow = false
+            },
+            ".sh" => new ProcessStartInfo
+            {
+                FileName = "bash",
+                Arguments = $"\"{filePath}\"",
+                UseShellExecute = false,
+                CreateNoWindow = false
+            },
+            _ => new ProcessStartInfo
+            {
+                FileName = filePath,
+                UseShellExecute = true,
+                WindowStyle = ProcessWindowStyle.Normal
+            }
+        };
 }

@@ -36,7 +36,7 @@ internal abstract class Command
                 args[j] :
                 null;
 
-            Arguments.FirstOrDefault(a => a.Name == name)?.SetValue(value);
+            Arguments.FirstOrDefault(a => a.LongName == name || a.ShortName == name)?.SetValue(value);
         }
     }
 }
