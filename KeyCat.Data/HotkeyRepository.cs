@@ -59,17 +59,9 @@ public sealed class HotkeyRepository : IDisposable, IAsyncDisposable
         return true;
     }
 
-    public async Task<bool> DeleteAsync(string shortcut)
+    public async Task DeleteAsync(Hotkey hotkey)
     {
-        var hotkey = await GetByShortcutAsync(shortcut);
-
-        if (hotkey is null)
-        {
-            return false;
-        }
-
         _context.Hotkeys.Remove(hotkey);
         await _context.SaveChangesAsync();
-        return true;
     }
 }
