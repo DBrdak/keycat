@@ -20,7 +20,7 @@ internal class HelpCommandHandler : CommandHandler<HelpCommand>
             if (command.Arguments.Count < 1)
             {
                 Console.WriteLine();
-                return;
+                continue;
             }
 
             Terminal.PrintLine($"\t Parameters:");
