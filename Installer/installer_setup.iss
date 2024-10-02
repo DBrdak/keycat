@@ -2,7 +2,7 @@
 
 [Setup]
 AppName=KeyCat
-AppVersion=1.0.0
+AppVersion=1.1.0
 DefaultDirName={pf}\KeyCat
 DefaultGroupName=KeyCat
 OutputBaseFilename=KeyCatSetup
@@ -34,21 +34,20 @@ Name: "{userstartup}\KeyCat Listener"; Filename: "{app}\Listener\KeyCat.Listener
 Filename: "{app}\Listener\KeyCat.Listener.exe"; Description: "Start KeyCat Listener now"; Flags: nowait postinstall skipifsilent
 
 [Code]
-const
-  HWND_BROADCAST1 = HWND($FFFF);
-  WM_SETTINGCHANGE = $001A;
-  SMTO_ABORTIFHUNG = $0002;
+type
+  WPARAM = UINT_PTR;
+  LPARAM = LongInt;
+  LRESULT = LongInt;
 
-function SendMessageTimeout(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM;
-  fuFlags: UINT; uTimeout: UINT; var lpdwResult: DWORD): LRESULT;
-  external 'SendMessageTimeoutW@user32.dll stdcall';
+const
+  WM_SETTINGCHANGE = $001A;
+
+function SendMessage(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: String): LRESULT;
+  external 'SendMessageW@user32.dll stdcall';
 
 procedure RefreshEnvironment;
-var
-  dwResult: DWORD;
 begin
-  SendMessageTimeout(HWND_BROADCAST1, WM_SETTINGCHANGE, 0, LPARAM(PChar('Environment')),
-    SMTO_ABORTIFHUNG, 5000, dwResult);
+  SendMessage(HWND_BROADCAST, WM_SETTINGCHANGE, 0, 'Environment');
 end;
 
 function InitializeSetup(): Boolean;

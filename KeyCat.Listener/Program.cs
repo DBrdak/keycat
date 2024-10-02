@@ -104,19 +104,9 @@ internal static class Program
                     MessageBoxIcon.Error);
                 return;
             }
-            MessageBox.Show(
-                $"{executablePath}",
-                "Error",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Error);
 
             var extension = Path.GetExtension(executablePath).ToLowerInvariant();
 
-            MessageBox.Show(
-                $"{extension}",
-                "Error",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Error);
             Process.Start(GetProccess(extension, executablePath));
 
             pressedKeys.Clear();
