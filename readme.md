@@ -18,14 +18,21 @@ To get the most out of KeyCat, we recommend using it to trigger batch files like
 
 ## Release Notes
 
-### Version 1.0.0
-**Initial deployment | Local hotkeys**
-
-- Basic functionality now available, including the ability to manage local hotkeys.
-
-### Upcoming Release
-
 #### Version 1.1.0
 **Installer improvements**
 
 - Auto-refreshes system environment variables, eliminating the need to restart the PC after installation.
+
+
+### Version 1.0.0
+**Initial deployment | Local hotkeys**
+
+- Basic functionality now available - managing local hotkeys.
+
+
+### Upcoming Release
+
+### Version 2.0.0
+**Online**
+
+- Publishing the hotkeys, so other users can use them
