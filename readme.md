@@ -1,7 +1,7 @@
 # KeyCat
 **A powerful, highly customizable hotkey manager.**
 
-[![Download KeyCat](https://github.com/DBrdak/keycat/raw/master/Installer/download_btn.png)](https://raw.githubusercontent.com/DBrdak/keycat/refs/heads/master/Installer/KeyCatSetup.exe?token=GHSAT0AAAAAACRJHSKFCZYDEXKXAWEQBKLAZX4MNFA)
+[![Download KeyCat](https://github.com/DBrdak/keycat/raw/master/Installer/win_download_btn.png)](https://raw.githubusercontent.com/DBrdak/keycat/refs/heads/master/Installer/KeyCatSetup.exe?token=GHSAT0AAAAAACRJHSKFCZYDEXKXAWEQBKLAZX4MNFA)
 
 KeyCat is a hotkey manager designed for developers and tech professionals, allowing you to create your own highly customizable hotkeys that are accessible system-wide. It helps streamline your workflow by enabling you to assign hotkeys to run any file or script across your system.
 
